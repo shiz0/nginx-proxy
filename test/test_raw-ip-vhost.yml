@@ -1,4 +1,4 @@
-version: '2'
+version: "2"
 
 networks:
   net1:
@@ -6,7 +6,7 @@ networks:
     ipam:
       config:
         - subnet: 172.20.0.0/16
-        - subnet: fd00::/80  
+        - subnet: fd00::/80
 
 services:
   web1:
@@ -41,7 +41,6 @@ services:
       ENABLE_IPV6: "true"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - ./lib/ssl/dhparam.pem:/etc/nginx/dhparam/dhparam.pem:ro
     networks:
       net1:
         ipv4_address: 172.20.0.4

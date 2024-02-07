@@ -1,4 +1,4 @@
-version: '2'
+version: "2"
 
 services:
   web:
@@ -13,6 +13,5 @@ services:
     image: nginxproxy/nginx-proxy:test
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - ../lib/ssl/dhparam.pem:/etc/nginx/dhparam/dhparam.pem:ro
     environment:
       SHA1_UPSTREAM_NAME: "true"
