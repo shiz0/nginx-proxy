@@ -65,6 +65,7 @@ It is not recommended to use the `latest` (`nginxproxy/nginx-proxy`, `nginxproxy
 
 Those tags points to the latest commit in the `main` branch. They do not carry any promise of stability, and using them will probably put your nginx-proxy setup at risk of experiencing uncontrolled updates to non backward compatible versions (or versions with breaking changes). You should always specify the version you want to use explicitly to ensure your setup doesn't break when the image is updated.
 
+
 ### Additional documentation
 
 Please check the [docs section](https://github.com/nginx-proxy/nginx-proxy/tree/main/docs).
