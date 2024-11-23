@@ -1,9 +1,9 @@
-FROM nginxproxy/docker-gen:0.11.1 AS docker-gen
+FROM docker.io/nginxproxy/docker-gen:0.14.3 AS docker-gen
 
-FROM nginxproxy/forego:0.18.1 AS forego
+FROM docker.io/nginxproxy/forego:0.18.2 AS forego
 
 # Build the final image
-FROM nginx:1.25.3-alpine
+FROM docker.io/library/nginx:1.27.2-alpine
 
 ARG NGINX_PROXY_VERSION
 # Add DOCKER_GEN_VERSION environment variable because 
@@ -17,8 +17,13 @@ ENV NGINX_PROXY_VERSION=${NGINX_PROXY_VERSION} \
 RUN apk add --no-cache --virtual .run-deps bash openssl
 
 # Configure Nginx
-RUN sed -i 's/worker_connections  1024/worker_connections  10240/' /etc/nginx/nginx.conf \
-   && mkdir -p '/etc/nginx/dhparam'
+RUN echo -e "\ninclude /etc/nginx/toplevel.conf.d/*.conf;" >> /etc/nginx/nginx.conf \
+   && sed -i 's/worker_connections.*;$/worker_connections   10240;/' /etc/nginx/nginx.conf \
+   && sed -i -e '/^\}$/{s//\}\nworker_rlimit_nofile 20480;/;:a' -e '$!N;$!ba' -e '}' /etc/nginx/nginx.conf \
+   && mkdir -p '/etc/nginx/toplevel.conf.d' \
+   && mkdir -p '/etc/nginx/dhparam' \
+   && mkdir -p '/etc/nginx/certs' \
+   && mkdir -p '/usr/share/nginx/html/errors'
 
 # Install Forego + docker-gen
 COPY --from=forego /usr/local/bin/forego /usr/local/bin/forego
